@@ -8,6 +8,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { useSSO } from '@clerk/clerk-expo';
 import Spinner from 'react-native-loading-spinner-overlay';
 import * as Linking from 'expo-linking';
+import { Toast } from 'toastify-react-native';
 
 const StartPage = () => {
 	const router = useRouter();
@@ -36,6 +37,12 @@ const StartPage = () => {
 			}
 		} catch (error) {
 			// TODO configure alerts
+			Toast.show({
+				type: 'error',
+				text1: 'Authentication Error',
+				text2: error instanceof Error ? error.message : String(error),
+				position: 'center',
+			});
 			// Alerts.showAlertDanger('OAuth error: ', error instanceof Error ? error.message : String(error));
 		} finally {
 			setLoading(false);

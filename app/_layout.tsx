@@ -3,6 +3,7 @@ import { tokenCache } from '@/utils/cache';
 import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { useEffect } from 'react';
 import { LogBox } from 'react-native';
+import ToastManager from 'toastify-react-native';
 
 LogBox.ignoreLogs(['Clerk: Clerk has been loaded with development keys']);
 
@@ -40,6 +41,11 @@ const RootLayoutNav = () => {
 			publishableKey={publishableKey}
 			tokenCache={tokenCache}
 		>
+			<ToastManager
+				showProgressBar={true}
+				showCloseIcon={true}
+				animationStyle='fade'
+			/>
 			<InitialLayout />
 		</ClerkProvider>
 	);
