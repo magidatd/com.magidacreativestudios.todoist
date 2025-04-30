@@ -8,7 +8,6 @@ import * as WebBrowser from 'expo-web-browser';
 import { useSSO } from '@clerk/clerk-expo';
 import Spinner from 'react-native-loading-spinner-overlay';
 import * as Linking from 'expo-linking';
-import { Toast } from 'toastify-react-native';
 
 const StartPage = () => {
 	const router = useRouter();
@@ -28,7 +27,7 @@ const StartPage = () => {
 			const { createdSessionId, setActive } = await startSSOFlow({
 				strategy: 'oauth_github',
 				redirectUrl: Linking.createURL('/(auth)/(tabs)/today', {
-					scheme: 'com.magidacreative.todoist',
+					scheme: 'com.magidacreativestudios.todoist',
 				}),
 			});
 
@@ -37,12 +36,6 @@ const StartPage = () => {
 			}
 		} catch (error) {
 			// TODO configure alerts
-			Toast.show({
-				type: 'error',
-				text1: 'Authentication Error',
-				text2: error instanceof Error ? error.message : String(error),
-				position: 'center',
-			});
 			// Alerts.showAlertDanger('OAuth error: ', error instanceof Error ? error.message : String(error));
 		} finally {
 			setLoading(false);
@@ -55,7 +48,7 @@ const StartPage = () => {
 		try {
 			const { createdSessionId, setActive } = await startSSOFlow({
 				strategy: 'oauth_google',
-				redirectUrl: Linking.createURL('/(auth)/(tabs)/today', { scheme: 'com.magidacreative.todoist' }),
+				redirectUrl: Linking.createURL('/(auth)/(tabs)/today', { scheme: 'com.magidacreativestudios.todoist' }),
 			});
 
 			if (createdSessionId) {
