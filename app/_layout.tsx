@@ -1,39 +1,48 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
+import { Slot, useRouter, useSegments } from 'expo-router';
+import { tokenCache } from '@/utils/cache';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { LogBox } from 'react-native';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+LogBox.ignoreLogs(['Clerk: Clerk has been loaded with development keys']);
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+if (!publishableKey) {
+	throw new Error('Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env');
 }
+
+const InitialLayout = () => {
+	const { isLoaded, isSignedIn } = useAuth();
+	const segments = useSegments();
+	const router = useRouter();
+
+	// If the user is signed in, redirect them to the home page
+	// If the user is not signed in, redirect them to the login page
+	useEffect(() => {
+		if (!isLoaded) return;
+
+		const inTabsGroup = segments[0] === '(auth)';
+
+		if (isSignedIn && !inTabsGroup) {
+			router.replace('/(auth)/(tabs)/today');
+		} else if (!isSignedIn) {
+			router.replace('/');
+		}
+	}, [isSignedIn]);
+
+	return <Slot />;
+};
+
+const RootLayoutNav = () => {
+	return (
+		<ClerkProvider
+			publishableKey={publishableKey}
+			tokenCache={tokenCache}
+		>
+			<InitialLayout />
+		</ClerkProvider>
+	);
+};
+
+export default RootLayoutNav;
