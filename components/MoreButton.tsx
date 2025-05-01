@@ -24,7 +24,10 @@ const MoreButton = ({ pageName }: MoreButtonProps) => {
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
-				<TouchableOpacity style={styles.button}>
+				<TouchableOpacity
+					style={styles.button}
+					activeOpacity={0.6}
+				>
 					<Ionicons
 						name='ellipsis-horizontal-outline'
 						size={30}

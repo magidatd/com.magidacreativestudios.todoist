@@ -3,7 +3,7 @@ import { Link, Stack } from 'expo-router';
 import React from 'react';
 import { Header } from '@react-navigation/elements';
 import { Image, StyleSheet } from 'react-native';
-//import Icon from '@react-native-vector-icons/material-design-icons';
+import Icon from '@react-native-vector-icons/material-design-icons';
 import { useUser } from '@clerk/clerk-expo';
 
 const BrowseLayout = () => {
@@ -59,11 +59,11 @@ const HeaderRight = () => {
 			href='/(auth)/(tabs)/browse/settings'
 			style={styles.link}
 		>
-			{/* <Icon
+			<Icon
 				name='cog-outline'
 				size={24}
 				color={Colors.primary}
-			/> */}
+			/>
 		</Link>
 	);
 };
