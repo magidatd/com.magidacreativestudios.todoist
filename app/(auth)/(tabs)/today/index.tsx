@@ -1,4 +1,4 @@
-import { View, Text, Button, SectionList } from 'react-native';
+import { View, Text, Button, SectionList, RefreshControl, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Fab from '@/components/Fab';
 import { useToast } from '@masumdev/rn-toast';
@@ -11,6 +11,8 @@ import { Todo } from '@/types/interfaces';
 
 import Animated, { StretchInY, LayoutAnimationConfig } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import TaskRow from '@/components/TaskRow';
+import { Colors } from '@/constants/Colors';
 
 interface Section {
 	title: string;
@@ -65,15 +67,65 @@ const TodayScreen = () => {
 		setSectionListData(listData);
 	}, [data]);
 
+	const loadTasks = async () => {
+		const tasks = await db.getAllAsync<Todo>(`
+      SELECT todos.*, projects.name as project_name
+      FROM todos
+      LEFT JOIN projects ON todos.project_id = projects.id
+      WHERE todos.completed = 0
+    `);
+		if (tasks) {
+			const listData = [{ title: today, data: tasks }];
+			setSectionListData(listData);
+		}
+		setRefreshing(false);
+	};
+
 	const onPress = () => {
 		showToast('Successfully logged into the application', 'error');
 	};
 	return (
 		<>
-			<Text>Today Screen</Text>
+			<SectionList
+				showsVerticalScrollIndicator={false}
+				contentInsetAdjustmentBehavior='automatic'
+				sections={sectionListData}
+				renderItem={({ item }) => (
+					<LayoutAnimationConfig>
+						<Animated.View entering={StretchInY}>
+							<TaskRow task={item} />
+						</Animated.View>
+					</LayoutAnimationConfig>
+				)}
+				renderSectionHeader={({ section }) => {
+					return <Text style={styles.header}>{section.title}</Text>;
+				}}
+				refreshControl={
+					<RefreshControl
+						refreshing={refreshing}
+						onRefresh={loadTasks}
+					/>
+				}
+			/>
+
 			<Fab />
 		</>
 	);
 };
 
 export default TodayScreen;
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		marginBottom: 82,
+	},
+	header: {
+		fontSize: 16,
+		backgroundColor: '#fff',
+		fontWeight: 'bold',
+		padding: 14,
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomColor: Colors.lightBorder,
+	},
+});

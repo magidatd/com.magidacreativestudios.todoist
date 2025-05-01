@@ -13,6 +13,8 @@ import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import { addDummyData } from '@/utils/addDummyData';
 import { useDrizzleStudio } from 'expo-drizzle-studio-plugin';
 
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
 LogBox.ignoreLogs(['Clerk: Clerk has been loaded with development keys']);
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -76,14 +78,16 @@ const RootLayoutNav = () => {
 					options={{ enableChangeListener: true }}
 					useSuspense
 				>
-					<Toaster
-						customColors={{
-							success: { background: Colors.successBackground, text: Colors.successText },
-							error: { background: Colors.errorBackground, text: Colors.errorText },
-							info: { background: Colors.infoBackground, text: Colors.infoText },
-						}}
-					/>
-					<InitialLayout />
+					<GestureHandlerRootView>
+						<Toaster
+							customColors={{
+								success: { background: Colors.successBackground, text: Colors.successText },
+								error: { background: Colors.errorBackground, text: Colors.errorText },
+								info: { background: Colors.infoBackground, text: Colors.infoText },
+							}}
+						/>
+						<InitialLayout />
+					</GestureHandlerRootView>
 				</SQLiteProvider>
 			</Suspense>
 		</ClerkProvider>
