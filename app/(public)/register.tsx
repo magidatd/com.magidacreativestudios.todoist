@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useToast } from '@masumdev/rn-toast';
 
 const RegisterPage = () => {
 	const { isLoaded, signUp, setActive } = useSignUp();
@@ -33,6 +34,8 @@ const RegisterPage = () => {
 	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 	const passwordValidation = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-~]).{8,16}$/;
 
+	const { showToast } = useToast();
+
 	const onSignUpPress = async () => {
 		if (!isLoaded) {
 			return;
@@ -41,7 +44,7 @@ const RegisterPage = () => {
 
 		if (!passwordValidation.test(password)) {
 			// TODO fix alerts using Sonner
-			//Alerts.showAlertDanger('Error', 'Password doesnt meet requirements');
+			showToast('Password doesnt meet requirements', 'error');
 			setTimeout(function () {
 				setLoading(false);
 			}, 3000);
@@ -51,7 +54,7 @@ const RegisterPage = () => {
 
 		if (password !== confirmPassword) {
 			// TODO fix alerts using Sonner
-			//Alerts.showAlertDanger('Error', 'Passwords do not match');
+			showToast('Passwords do not match', 'error');
 			setTimeout(function () {
 				setLoading(false);
 			}, 3000);
@@ -69,11 +72,14 @@ const RegisterPage = () => {
 			// Send verification Email
 			await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
 
+			showToast('Check your email for verification code', 'info');
+
 			// change the UI to verify the email address
 			setPendingVerification(true);
 		} catch (err: any) {
 			// TODO fix alerts using Sonner
 			// alert(err.errors[0].message);
+			showToast(err.errors[0].message, 'error');
 		} finally {
 			setLoading(false);
 		}
@@ -93,7 +99,7 @@ const RegisterPage = () => {
 			await setActive({ session: completeSignUp.createdSessionId });
 		} catch (err: any) {
 			// TODO fix alerts using Sonner
-			alert(err.errors[0].message);
+			showToast(err.errors[0].message, 'error');
 		} finally {
 			setLoading(false);
 		}

@@ -1,16 +1,22 @@
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import React from 'react';
-//import { toast } from 'sonner-native';
+import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 
 const Fab = () => {
-	const onPress = () => {};
+	const router = useRouter();
+
+	const onPress = () => {
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		router.push('/task/new');
+	};
 
 	return (
 		<TouchableOpacity
 			style={styles.fab}
-			onPress={() => onPress}
+			onPress={() => onPress()}
 		>
 			<Ionicons
 				name='add'

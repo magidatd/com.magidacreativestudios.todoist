@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { useAuth } from '@clerk/clerk-expo';
 import { Colors } from '@/constants/Colors';
-//import Icon from '@react-native-vector-icons/material-design-icons';
+import Icon from '@react-native-vector-icons/material-design-icons';
 
 const TabsPage = () => {
 	const { isSignedIn } = useAuth();
@@ -19,13 +19,13 @@ const TabsPage = () => {
 				options={{
 					title: 'Today',
 					// Todo fix icons with FA6
-					// tabBarIcon: ({ color, size }) => (
-					// 	<Icon
-					// 		name='calendar-month'
-					// 		size={size}
-					// 		color={color}
-					// 	/>
-					// ),
+					tabBarIcon: ({ color, size }) => (
+						<Icon
+							name='calendar'
+							size={size}
+							color={color}
+						/>
+					),
 				}}
 				redirect={!isSignedIn}
 			/>
@@ -34,13 +34,13 @@ const TabsPage = () => {
 				options={{
 					title: 'Upcoming',
 					// Todo fix icons with FA6
-					// tabBarIcon: ({ color, size }) => (
-					// 	<Icon
-					// 		name='calendar-search'
-					// 		size={size}
-					// 		color={color}
-					// 	/>
-					// ),
+					tabBarIcon: ({ color, size }) => (
+						<Icon
+							name='calendar-search'
+							size={size}
+							color={color}
+						/>
+					),
 				}}
 				redirect={!isSignedIn}
 			/>
@@ -49,13 +49,13 @@ const TabsPage = () => {
 				options={{
 					title: 'Search',
 					// Todo fix icons with FA6
-					// tabBarIcon: ({ color, size }) => (
-					// 	<Icon
-					// 		name='magnify-expand'
-					// 		size={size}
-					// 		color={color}
-					// 	/>
-					// ),
+					tabBarIcon: ({ color, size }) => (
+						<Icon
+							name='magnify-expand'
+							size={size}
+							color={color}
+						/>
+					),
 				}}
 				redirect={!isSignedIn}
 			/>
@@ -64,13 +64,13 @@ const TabsPage = () => {
 				options={{
 					title: 'Browse',
 					// Todo fix icons with FA6
-					// tabBarIcon: ({ color, size }) => (
-					// 	<Icon
-					// 		name='text-box-search-outline'
-					// 		size={size}
-					// 		color={color}
-					// 	/>
-					// ),
+					tabBarIcon: ({ color, size }) => (
+						<Icon
+							name='text-box-search-outline'
+							size={size}
+							color={color}
+						/>
+					),
 				}}
 				redirect={!isSignedIn}
 			/>

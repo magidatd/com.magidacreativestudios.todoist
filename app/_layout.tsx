@@ -4,6 +4,9 @@ import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import { useEffect } from 'react';
 import { LogBox } from 'react-native';
 
+import { Toaster } from '@masumdev/rn-toast';
+import { Colors } from '@/constants/Colors';
+
 LogBox.ignoreLogs(['Clerk: Clerk has been loaded with development keys']);
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -40,6 +43,13 @@ const RootLayoutNav = () => {
 			publishableKey={publishableKey}
 			tokenCache={tokenCache}
 		>
+			<Toaster
+				customColors={{
+					success: { background: Colors.successBackground, text: Colors.successText },
+					error: { background: Colors.errorBackground, text: Colors.errorText },
+					info: { background: Colors.infoBackground, text: Colors.infoText },
+				}}
+			/>
 			<InitialLayout />
 		</ClerkProvider>
 	);

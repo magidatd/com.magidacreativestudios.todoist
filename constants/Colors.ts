@@ -8,6 +8,12 @@ export const Colors = {
 	lightText: '#a6a6a6',
 	lightBorder: '#d9d9d9',
 	blue: '#6c47ff',
+	errorBackground: '#fef0f1',
+	infoBackground: '#f1f1ff',
+	successBackground: '#e9fbea',
+	errorText: '#dc4c3ecc',
+	infoText: '#6c47ffcc',
+	successText: '#22ff25cc',
 };
 
 export const DATE_COLORS = {

@@ -14,8 +14,9 @@ import React, { useState } from 'react';
 import { useSignIn } from '@clerk/clerk-expo';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useToast } from '@masumdev/rn-toast';
 
 const ResetPage = () => {
 	const [emailAddress, setEmailAddress] = useState('');
@@ -30,6 +31,8 @@ const ResetPage = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const passwordValidation = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-~]).{8,16}$/;
 
+	const { showToast } = useToast();
+
 	// Request a passowrd reset code by email
 	const onRequestReset = async () => {
 		setLoading(true);
@@ -41,10 +44,10 @@ const ResetPage = () => {
 			});
 			setSuccessfulCreation(true);
 			// TODO fix alerts using Sonner
-			//Alerts.showAlertInfo('Info', 'Password reset request sent');
+			showToast('Password reset request sent', 'error');
 		} catch (err: any) {
 			// TODO fix alerts using Sonner
-			//Alerts.showAlertDanger('Error', err.errors[0].message);
+			showToast(err.errors[0].message, 'error');
 		} finally {
 			setLoading(false);
 		}
@@ -56,7 +59,7 @@ const ResetPage = () => {
 
 		if (!passwordValidation.test(password)) {
 			// TODO fix alerts using Sonner
-			//Alerts.showAlertDanger('Error', 'Password doesnt meet requirements');
+			showToast('Password doesnt meet requirements', 'error');
 			setTimeout(function () {
 				setLoading(false);
 			}, 3000);
@@ -72,13 +75,13 @@ const ResetPage = () => {
 			});
 			console.log(result);
 			// TODO fix alerts using Sonner
-			//Alerts.showAlertSuccess('Success', 'Password reset successfully');
+			showToast('Password reset successfully', 'success');
 
 			// Set the user session active, which will log in the user automatically
 			await setActive!({ session: result.createdSessionId });
 		} catch (err: any) {
 			// TODO fix alerts using Sonner
-			//Alerts.showAlertDanger('Error', err.errors[0].message);
+			showToast(err.errors[0].message, 'error');
 		} finally {
 			setLoading(false);
 		}

@@ -1,11 +1,13 @@
 import { View, Text } from 'react-native';
 import React from 'react';
+import Fab from '@/components/Fab';
 
 const SearchScreen = () => {
 	return (
-		<View>
+		<>
 			<Text>Search Screen</Text>
-		</View>
+			<Fab />
+		</>
 	);
 };
 

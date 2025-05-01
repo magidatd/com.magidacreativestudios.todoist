@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { useToast } from '@masumdev/rn-toast';
 
 const LoginPage = () => {
 	const { signIn, setActive, isLoaded } = useSignIn();
@@ -27,6 +28,8 @@ const LoginPage = () => {
 	const [loading, setLoading] = useState(false);
 
 	const [showPassword, setShowPassword] = useState(false);
+
+	const { showToast } = useToast();
 
 	const onSignInPress = async () => {
 		if (!isLoaded) {
@@ -47,6 +50,7 @@ const LoginPage = () => {
 			//alert(err.errors[0].message);
 			if (err.errors[0].message === 'is missing') err.errors[0].message = 'Email is missing';
 			// TODO fix alerts using Sonner
+			showToast(err.errors[0].message, 'error');
 			//Alerts.showAlertDanger('Error', err.errors[0].message);
 		} finally {
 			setLoading(false);

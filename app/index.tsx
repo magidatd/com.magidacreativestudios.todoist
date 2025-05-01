@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Redirect, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as WebBrowser from 'expo-web-browser';
 import { useSSO } from '@clerk/clerk-expo';
 import Spinner from 'react-native-loading-spinner-overlay';
 import * as Linking from 'expo-linking';
+import { useToast } from '@masumdev/rn-toast';
+
+import { GoogleIcon, Envelope, SquareGithubIcon } from '../icons';
 
 const StartPage = () => {
 	const router = useRouter();
@@ -15,6 +17,8 @@ const StartPage = () => {
 
 	const { startSSOFlow } = useSSO();
 	const [loading, setLoading] = useState(false);
+
+	const { showToast } = useToast();
 
 	const openLink = async () => {
 		WebBrowser.openBrowserAsync('http://magidacreativestudios.dev');
@@ -36,6 +40,7 @@ const StartPage = () => {
 			}
 		} catch (error) {
 			// TODO configure alerts
+			showToast(error instanceof Error ? error.message : String(error), 'error');
 			// Alerts.showAlertDanger('OAuth error: ', error instanceof Error ? error.message : String(error));
 		} finally {
 			setLoading(false);
@@ -56,6 +61,7 @@ const StartPage = () => {
 			}
 		} catch (error) {
 			// TODO configure alerts
+			showToast(error instanceof Error ? error.message : String(error), 'error');
 			//Alerts.showAlertDanger('OAuth error: ', error instanceof Error ? error.message : String(error));
 		} finally {
 			setLoading(false);
@@ -64,6 +70,7 @@ const StartPage = () => {
 
 	return (
 		<View style={[styles.container, { paddingTop: top }]}>
+			<Spinner visible={loading} />
 			<Image
 				source={require('@/assets/images/todoist-logo.png')}
 				style={styles.loginImage}
@@ -79,10 +86,11 @@ const StartPage = () => {
 					style={[styles.btn]}
 					onPress={handleGithub}
 				>
-					<Ionicons
+					{/* <Ionicons
 						name='logo-github'
 						size={24}
-					/>
+					/> */}
+					<SquareGithubIcon />
 					<Text style={[styles.btnText]}>Continue with Github</Text>
 				</TouchableOpacity>
 
@@ -90,10 +98,11 @@ const StartPage = () => {
 					style={[styles.btn]}
 					onPress={handleGoogle}
 				>
-					<Ionicons
+					{/* <Ionicons
 						name='logo-google'
 						size={24}
-					/>
+					/> */}
+					<GoogleIcon />
 					<Text style={[styles.btnText]}>Continue with Google</Text>
 				</TouchableOpacity>
 
@@ -101,10 +110,11 @@ const StartPage = () => {
 					style={[styles.btn]}
 					onPress={() => router.replace('/(public)/login')}
 				>
-					<Ionicons
+					{/* <Ionicons
 						name='mail-sharp'
 						size={24}
-					/>
+					/> */}
+					<Envelope />
 					<Text style={[styles.btnText]}>Continue with Email</Text>
 				</TouchableOpacity>
 

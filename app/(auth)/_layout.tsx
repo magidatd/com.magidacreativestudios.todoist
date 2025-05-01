@@ -9,6 +9,10 @@ const AuthLayout = () => {
 				name='(tabs)'
 				options={{ headerShown: false }}
 			/>
+			<Stack.Screen
+				name='task/new'
+				options={{ presentation: 'modal' }}
+			/>
 		</Stack>
 	);
 };

@@ -30,7 +30,7 @@ const UpcomingLayout = () => {
 						fontWeight: 'bold',
 						fontSize: 30,
 					},
-					headerRight: () => <MoreButton />,
+					headerRight: () => <MoreButton pageName='Upcoming' />,
 				}}
 			/>
 		</Stack>

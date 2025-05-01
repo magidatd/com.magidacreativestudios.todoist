@@ -30,7 +30,7 @@ const TodayLayout = () => {
 						fontWeight: 'bold',
 						fontSize: 30,
 					},
-					headerRight: () => <MoreButton />,
+					headerRight: () => <MoreButton pageName='Today' />,
 				}}
 			/>
 		</Stack>
